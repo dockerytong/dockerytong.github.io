@@ -1,7 +1,7 @@
 ---
 ---
 
-@import "{{ site-theme }}";
+@import "{{ jekyll-theme-primer }}";
 
 .markdown-body {
   max-width: 800px;
@@ -22,7 +22,7 @@ input.task-list-item-checkbox {
   margin-right: 4px;
 }
 
-h1,
+// h1,
 h2,
 h3,
 h4,
