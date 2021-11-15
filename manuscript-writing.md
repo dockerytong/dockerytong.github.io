@@ -1,5 +1,8 @@
 # manuscript-writing
 
+[Back to home](/readme.md)
+
+**Table of content**
 1. [manuscript-writing](#manuscript-writing)
 2. [Introduction](#introduction)
 3. [Materials and methods](#materials-and-methods)

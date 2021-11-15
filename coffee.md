@@ -1,5 +1,8 @@
 # coffee
 
+[Back to home](/readme.md)
+
+**Table of content**
 1. [coffee](#coffee)
    1. [Coffee beans](#coffee-beans)
    2. [Coffee things](#coffee-things)
@@ -14,5 +17,6 @@
 
 - 20210930 不知名陶瓷手磨（退休）
 - 20210930 栗子C 手磨
-- 20210930 Coffee filter from AEON, ￥25 for 100 pieces
+- 20210930 AEON 原色滤纸, ￥25 for 100 pieces
+- 20211110 泰磨 白色滤纸 （非常薄）
 
