@@ -14,7 +14,7 @@
 ## writings
 
 - [\[dftbook\]](/dftbook/dftbook.html) - A book for modeling and dft calculation of nano structures using ASE and Quantum Espresso.
-
+- [\[dft_intro\]](/dftbook/DFT_book.md) - introduction to dft
 ## life
 
 - [[coffee]] - Tracking coffee beans and related things
