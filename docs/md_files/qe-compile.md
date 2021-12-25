@@ -10,6 +10,7 @@
    2. [编译QE](#编译qe)
       1. [QE6.7](#qe67)
       2. [QE6.8](#qe68)
+      3. [QE7.0](#qe70)
 
 # 背景
 
@@ -126,3 +127,32 @@ make cp -j 8
 make pp -j 8
 make hp -j 8
 ```
+
+### QE7.0
+
+**QE7.0 的新特性**
+
+- GPU support for PWscf and CP significantly extended
+- RMM-DIIS for CPU (S. Nisihara) and GPU (E. de Paoli, P. Delugas)
+- DFT-D3: MPI parallelization and GPU acceleration with OpenACC
+- projwfc.x can be used to compute the PDOS in a local basis (I. Timrov)
+- Charge self-consistent DFT+DMFT calculations with the TRIQS software package
+- via Wannier90 (S. Beck, CCQ Flatiron Institute)
+
+```bash
+# 下载源码包
+wget https://github.com/QEF/q-e/releases/download/qe-7.0/qe-7.0-ReleasePack.tgz
+# 解压
+tar -xvzf qe-7.0-ReleasePack.tgz
+cd qe-7.0/
+# 链接库
+./configure --with-cuda=/opt/nvidia/hpc_sdk/Linux_x86_64/20.7/cuda/11.0 --with-cuda-cc=35 --with-cuda-runtime=11.0 --with-scalapack=no --enable-openacc
+# 编译
+make pw
+make pp -j
+make cp -j
+```
+
+编译中使用的库：
+![QE7.0编译中使用的库](../../attachments/2021-12-25-12-15-34.png)
+
