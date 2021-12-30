@@ -14,7 +14,7 @@
 
 ## writings
 
-- [[/dftbook/dftbook.html]] - A book for modeling and dft calculation of nano structures using ASE and Quantum Espresso.
+- [dftbook](./writes/dftbook.html) - A book for modeling and dft calculation of nano structures using ASE and Quantum Espresso.
 
 ## life
 
