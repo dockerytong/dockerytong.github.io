@@ -14808,7 +14808,7 @@ Atomization energy: 12.04 eV
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">ase.build</span> <span class="kn">import</span> <span class="n">molecule</span>
@@ -14876,7 +14876,7 @@ Atomization energy: 12.04 eV
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 获取高对称点</span>
@@ -14912,17 +14912,6 @@ Atomization energy: 12.04 eV
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>===========================bands============================
-DEBUG    [set_label           ]: Directory: relax/water/bands
-DEBUG    [set_label           ]: Prefix: water
-DEBUG    [set_queue           ]: Espresso command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pw.x    -in  water.pwi  &gt;  water.pwo
-DEBUG    [set_queue           ]: Queue command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pw.x    -in  water.pwi  &gt;  water.pwo
-DEBUG    [read_convergence_post]: JOB DONE.
-DEBUG    [check_state_post    ]: Parameters changed
-DEBUG    [set_queue           ]: Espresso command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pw.x    -in  water.pwi  &gt;  water.pwo
-DEBUG    [set_queue           ]: Queue command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pw.x    -in  water.pwi  &gt;  water.pwo
-DEBUG    [write_input         ]: Write input successfully
-DEBUG    [read_convergence    ]: JOB DONE
-DEBUG    [read_results        ]: Read result successfully!
 </pre>
 </div>
 </div>
@@ -14930,7 +14919,7 @@ DEBUG    [read_results        ]: Read result successfully!
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
 
 
 
@@ -14965,15 +14954,28 @@ DEBUG    [read_results        ]: Read result successfully!
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h3 id="3.3.2-&#24577;&#23494;&#24230;&#35745;&#31639;">3.3.2 &#24577;&#23494;&#24230;&#35745;&#31639;<a class="anchor-link" href="#3.3.2-&#24577;&#23494;&#24230;&#35745;&#31639;">&#182;</a></h3>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 获取费米能级</span>
 <span class="n">fermi</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">get_fermi_level</span><span class="p">()</span>
-<span class="c1"># nscf 计算</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># nscf 计算</span>
 <span class="n">calc</span><span class="o">.</span><span class="n">nscf</span><span class="p">(</span><span class="n">kpts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">calc</span><span class="o">.</span><span class="n">nscf_calculate</span><span class="p">()</span>
 <span class="c1"># dos 计算</span>
@@ -15003,18 +15005,9 @@ DEBUG    [read_results        ]: Read result successfully!
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>============================nscf============================
-DEBUG    [set_label           ]: Directory: relax/water/nscf
-DEBUG    [set_label           ]: Prefix: water
-DEBUG    [set_queue           ]: Espresso command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pw.x    -in  water.pwi  &gt;  water.pwo
-DEBUG    [set_queue           ]: Queue command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pw.x    -in  water.pwi  &gt;  water.pwo
-DEBUG    [read_convergence_post]: JOB DONE.
-DEBUG    [nscf_calculate      ]: Use previous results!
 ============================dos=============================
-DEBUG    [set_label           ]: Directory: relax/water/dos
-DEBUG    [set_label           ]: Prefix: water
-DEBUG    [read_convergence_post]: JOB DONE.
-DEBUG    [post                ]: Previous calculation done.
-DEBUG    [post                ]: File and Parameters did not change. Use previous results!
+Running dos
+Done: dos
 =============================pw=============================
 DEBUG    [set_label           ]: Directory: relax/water
 DEBUG    [set_label           ]: Prefix: water
@@ -15030,7 +15023,7 @@ DEBUG    [read_results        ]: Read result successfully!
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
 
 
 
@@ -15060,6 +15053,70 @@ DEBUG    [read_results        ]: Read result successfully!
 
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="3.3.3-&#30005;&#23376;&#32467;&#26500;&#20998;&#26512;">3.3.3 &#30005;&#23376;&#32467;&#26500;&#20998;&#26512;<a class="anchor-link" href="#3.3.3-&#30005;&#23376;&#32467;&#26500;&#20998;&#26512;">&#182;</a></h3><ol>
+<li>电荷密度图（charge density plot）</li>
+</ol>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 使用pp.x绘制电荷密度</span>
+<span class="n">calc</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="n">package</span><span class="o">=</span><span class="s1">&#39;pp&#39;</span><span class="p">,</span> <span class="c1"># use pp.x</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;water&#39;</span><span class="p">,</span>
+    <span class="n">outdir</span> <span class="o">=</span> <span class="s1">&#39;relax/water&#39;</span><span class="p">,</span>
+    <span class="n">plot_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># select charge density</span>
+    <span class="n">iflag</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="c1"># 3D plot</span>
+    <span class="n">output_format</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="c1"># for vesta</span>
+    <span class="n">fileout</span> <span class="o">=</span> <span class="s1">&#39;charge_density.cub&#39;</span> <span class="c1"># file name for output    </span>
+<span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>=============================pp=============================
+DEBUG    [set_label           ]: Directory: relax/water/pp
+DEBUG    [set_label           ]: Prefix: water
+DEBUG    [set_queue           ]: Espresso command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pp.x    -in  water.ppi  &gt;  water.ppo
+DEBUG    [set_queue           ]: Queue command: mpirun -np 2 /home/liutong/software/qe-7.0/bin/pp.x    -in  water.ppi  &gt;  water.ppo
+Running pp
+Done: pp
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="../images/charge_density.jpg" alt="charge_density plot"></p>
+
+</div>
 </div>
 </body>
 
