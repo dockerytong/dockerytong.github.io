@@ -3,6 +3,8 @@
 [Back to home](/readme.md)
 
 **Table of content**
+<!-- TOC -->
+
 1. [cell-growth](#cell-growth)
    1. [细胞毒性 & 细胞活力检测](#细胞毒性--细胞活力检测)
       1. [膜损伤检测](#膜损伤检测)
@@ -17,6 +19,8 @@
          1. [ATP检测试剂盒 (化学发光法)](#atp检测试剂盒-化学发光法)
       3. [DNA的合成的检测](#dna的合成的检测)
          1. [BeyoClick™ EdU细胞增殖检测试剂盒(TMB法) (色度法)](#beyoclick-edu细胞增殖检测试剂盒tmb法-色度法)
+
+<!-- /TOC -->
 
 ## 细胞毒性 & 细胞活力检测
 
