@@ -16,6 +16,7 @@
 
 - [dftbook](writes/dftbook.html) - 使用ASE构建纳米结构并使用Quantum Espresso进行计算
 - [non-linear-fit](writes/non-linear_in_R.html) - 在R中简单的进行非线性拟合
+- [ode_with_R](writes/ode_with_R.html) - 使用R求解常微分方程
 
 ## life
 
