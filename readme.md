@@ -5,6 +5,11 @@
 
 ------
 
+## 参考
+
+- [中文排版参考](https://www.w3.org/TR/clreq/) - W3C的专业中文排版参考文档
+- [现代科研指北](https://bookdown.org/yufree/sciguide/) - 现代科研指北 - 于淼
+
 ## study
 
 - [[manuscript-writing]] - A simple template for drafting journal article
