@@ -1,0 +1,310 @@
+---
+title: R中的微分方程
+author: liutong
+date: '`r Sys.Date()`'
+output:
+    html_document:
+        toc: yes
+        number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", message = FALSE, warning = FALSE)
+library(tidyverse)
+``` 
+
+# R中的微分方程
+
+## 相关R包
+
+* deSolve：最主要的积分包
+* rootSolve：求稳态解
+* bvpSolve：求解边值问题
+* ReacTran：偏微分方程
+* simecol：构建模型的动态环境
+
+## 简单环境相关模型
+
+### 拟一级动力学降解动力学
+
+拟一级降解动力学可以表示为$\frac{dC}{dt} = -kC$。
+
+```{r}
+f1 = function(t, y, parms){
+    with(as.list(parms),{
+        dy = -1 * parms[1] * y
+        return(list(dy))
+    })
+}
+
+times = seq(0, 5, length.out = 50)
+f1_out = ode(
+    times = times, # 求解时间
+    y = 10, # 初始浓度
+    func = f1, # 模型函数
+    parms = c(1) # 模型参数
+)
+```
+
+```{r fig.align='center', fig.height=3.5, fig.width=3.5}
+f1_out %>%
+    as.data.frame() %>%
+    setNames(c("time", "y")) %>%
+    ggplot(aes(time, y)) +
+    geom_point()
+```
+
+### 拟二级动力学降解动力学
+
+拟二级降解动力学可以表示为$\frac{dC}{dt} = -kC^2$。
+
+```{r}
+f2 = function(t, y, parms){
+    with(as.list(parms),{
+        dy = -1 * parms[1] * y^2
+        return(list(dy))
+    })
+}
+
+times = seq(0, 5, length.out = 50)
+f2_out = ode(
+    times = times, # 求解时间
+    y = 10, # 初始浓度
+    func = f2, # 模型函数
+    parms = c(1) # 模型参数
+)
+```
+
+```{r fig.align='center', fig.height=3.5, fig.width=3.5}
+f2_out %>%
+    as.data.frame() %>%
+    setNames(c("time", "y")) %>%
+    ggplot(aes(time, y)) +
+    geom_point()
+```
+
+### 反硝化
+
+```{r}
+f_n = function(t, y, parms) {
+    with(as.list(c(y, parms)), {
+        dNO3 = -1 * k1 * NO3
+        dNO2 = k1 * NO3 - k2 * NO2
+        return(
+            list(c(dNO3, dNO2))
+        )
+    })
+}
+times = seq(0, 5, length.out = 50)
+parms_N = c(k1 = 1, k2 = 0.5)
+y_ini = c(NO3 = 10, NO2 = 0)
+
+f_n_out = ode(
+    times = times, 
+    y = y_ini,
+    parms = parms_N,
+    func = f_n
+)
+```
+
+```{r fig.align='center', fig.height=3.5, fig.width=3.5}
+f_n_out %>%
+    as.data.frame() %>%
+    pivot_longer(cols = -1) %>%
+    ggplot(aes(time, value, color = name)) +
+    geom_point() +
+    theme(legend.position = 'top')
+```
+
+## 其他模型
+
+### Logistic增长模型
+
+微分方程：
+$$
+\frac{dN}{dt} = r·N·(1 - \frac{N}{K})
+$$
+
+数值求解该方程：
+
+```{r fig.width=3.5, fig.height=3.5}
+library(deSolve)
+# 模型定义
+model <- function(time, y, parms) {
+    with(as.list(c(y, parms)), {
+        dN <- r * N * (1 - N / K)
+        return(list(dN))
+    })
+}
+# 参数定义
+y <- c(N = 0.1)
+parms <- c(r = 0.1, K = 10)
+times <- seq(0, 100, 1)
+# 数值求解
+out <- ode(y, times, model, parms)
+out %>% as.data.frame()  %>% 
+    ggplot(aes(time, N)) +
+    geom_point()
+```
+模型求解的诊断：
+```{r}
+diagnostics(out)
+```
+
+### 常微分方程组：刚性常微分方程
+
+#### 问题定义
+
+* 无外力的刚体欧拉方程
+* 三个因变量（$y_1, y_2, y_3$），旋转矢量的坐标
+* （$I_1, I_2, I_3$）是主惯性矩
+
+#### 问题的数学形式
+
+**微分方程**
+
+$$
+y_1^{'} = (I_2 - I_3)/I_1 ·y_2y_3 \\
+y_2^{'} = (I_3 - I_1)/I_2 ·y_1y_3 \\
+y_3^{'} = (I_1 - I_2)/I_3 ·y_1y_2
+$$ 
+
+**参数**
+
+$$I_1 = 0.5, I_2 = 2, I_3 = 3$$
+
+**初值**
+
+$$y_1(0) = 1, y_2(0) = 0, y_3(0) = 0.9$$
+
+#### 模型求解
+
+```{r}
+rigidode <- function(t, y, parms) {
+    dy1 <- -2 * y[2] * y[3]
+    dy2 <- 1.25 * y[1] * y[3]
+    dy3 <- -0.5 * y[1] * y[2]
+    list(c(dy1, dy2, dy3))
+}
+yini <- c(y1 = 1, y2 = 0, y3 = 0.9)
+times <- seq(from = 0, to = 20, by = 0.01)
+out <- ode(times = times, y = yini, func = rigidode, parms = NULL)
+```
+
+```{r}
+plot(out)
+library(scatterplot3d)
+par(mar = c(0, 0, 0, 0))
+scatterplot3d(out[,-1], xlab = "", ylab = "", zlab = "", label.tick.marks = FALSE)
+```
+
+### 混沌系统 - 洛伦兹方程
+
+```{r}
+chaos <- function(t, state, parameters) {
+    with(as.list(c(state)), {
+        dx <- -8 / 3 * x + y * z
+        dy <- -10 * (y - z)
+        dz <- -x * y + 28 * y - z
+        list(c(dx, dy, dz))
+    })
+}
+yini <- c(x = 1, y = 1, z = 1)
+yini2 <- yini + c(1e-6, 0, 0)
+times <- seq(0, 100, 0.01)
+out <- ode(y = yini, times = times, func = chaos, parms = 0)
+out2 <- ode(y = yini2, times = times, func = chaos, parms = 0)
+```
+
+```{r fig.width=3.5, fig.height=3.5}
+plot(out[, "x"], out[, "y"],
+    pch = ".", main = "Lorenz butterfly",
+    xlab = "x", ylab = "y"
+)
+```
+
+### 扩散、对流和反应：使用`ReacTran`求解偏微分方程
+
+#### 偏微分方程
+
+**以对流扩散方程形式处理偏微分方程**
+
+许多二阶偏微分方程能写成对流扩散方程形式：
+
+$$
+\frac{\partial C}{\partial t} = - v \frac{\partial C}{\partial x} + D \frac{\partial^2 C}{\partial x^2} + f(t,x,C)
+$$
+
+对于二维和三维形式也能这样处理。
+
+**栗子：一维波函数**
+
+$$
+\frac{\partial^2 U}{\partial t^2} = c^2 \frac{\partial^2 U}{\partial x^2}
+$$
+
+以上方程可以写作：
+
+$$\frac{du}{dt} = v \\ \frac{\partial v}{\partial t}  = c^2 \frac{\partial^2 U}{\partial x^2}$$
+
+**R中处理PDE的包**
+
+R中有三个包能处理PDE：
+
+* ReacTran：用于PDE数值近似的方法
+* deSolve：瞬态求解
+* rootSolve：稳态求解
+
+#### 1D偏微分方程
+
+**数值求解波函数**
+
+```{r}
+library(ReacTran)
+
+wave <- function(t, y, parms) {
+    u <- y[1:N]
+    v <- y[(N + 1):(2 * N)]
+    du <- v
+    dv <- tran.1D(
+        C = u, C.up = 0, C.down = 0, D = 1,
+        dx = xgrid
+    )$dC
+    list(c(du, dv))
+}
+
+xgrid <- setup.grid.1D(-100, 100, dx.1 = 0.2)
+x <- xgrid$x.mid
+N <- xgrid$N
+uini <- exp(-0.2 * x^2)
+vini <- rep(0, N)
+yini <- c(uini, vini)
+times <- seq(from = 0, to = 50, by = 1)
+
+out <- ode.1D(yini, times, wave, parms,
+    method = "adams",
+    names = c("u", "v"), dimens = N
+)
+```
+**Plotting 1-D PDEs: matplot.1D**
+```{r fig.width=3.5, fig.height=3.5}
+outtime <- seq(from = 0, to = 50, by = 10)
+ matplot.1D(out, which = "u", subset = time %in% outtime, grid = x, xlab = "x", ylab = "u", type = "l", lwd = 2, xlim = c(-50, 50), col="black")
+```
+**Plotting 1-D PDEs: image**
+```{r fig.width=3.5, fig.height=3.5}
+image(out, which = "u", grid = x)
+```
+
+## 加速方程求解
+
+###  加速方法
+
+1. 使用矩阵
+2. 一部分代码使用Fortran或C
+3. 全部代码使用Fortran或C
+
+*使用矩阵能够显著加速模型求解，同时保持R代码的灵活性。*
+
+*使用编译语言（Fortran或C）能够进一步减少CPU时间，但是会带来代码开发的复杂度。*
+
