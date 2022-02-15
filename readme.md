@@ -23,6 +23,11 @@
 - [non-linear-fit](writes/non-linear_in_R.html) - 在R中简单的进行非线性拟合
 - [ode_in_R](writes/odeinR.html) - 使用R求解微分方程
 
+## 有用的教程收集
+
+- [生长曲线分析](https://cran.r-project.org/web/packages/growthcurver/vignettes/Growthcurver-vignette.html) - 使用R包`growthcurver`批量分析生长曲线
+- [污染降解动力学](https://cran.r-project.org/web/packages/mkin/vignettes/mkin.html) - 使用R包`mkin`对污染物降解动力学进行拟合，能够分析降解中间产物的动力学数据
+
 ## life
 
 - [[coffee]] - Tracking coffee beans and related things
