@@ -22,6 +22,7 @@
 - [dftbook](writes/dftbook.html) - 使用ASE构建纳米结构并使用Quantum Espresso进行计算
 - [non-linear-fit](writes/non-linear_in_R.html) - 在R中简单的进行非线性拟合
 - [ode_in_R](writes/odeinR.html) - 使用R求解微分方程
+- [2dcos/cds](writes/2dcos.html) - 使用R进行二维光谱分析
 
 ## 有用的教程收集
 
