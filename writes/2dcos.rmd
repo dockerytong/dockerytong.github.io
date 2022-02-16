@@ -1,0 +1,49 @@
+---
+title: 
+author: 
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', message = FALSE, warning = FALSE)
+
+library(ecmisc)
+library(patchwork)
+```
+
+# 使用R进行二维光谱分析
+
+## 二维相关光谱
+
+自从他们的发明以来，科学家们使用红外 (IR)、拉曼或核磁共振 (NMR) 光谱来获取有关原子和分子的信息。 从 IR、拉曼或 NMR 光谱中提取信息的常用方法是将观察到的光谱信号分配给分子结构，从而推断分子特性。 在分析一系列光谱时，有时很难识别两个重叠信号的光谱变化，从而无法将这些信号分配给特定的分子结构。 为了克服这些问题，发明了二维 (2D) 相关分析 (Noda 1989, 1993)。
+
+2D 相关分析（这是描述 2D 相关光谱的另一个术语）在光谱学中用于更清楚地分析光谱特征并提取其他信息，这些信息可能在经典的一维 (1D) 光谱图中被掩盖。 为了实现这一目标，二维相关光谱使用相关积分将在外部扰动影响下收集的一系列光谱相关联。  Isao Noda 将相关积分应用于 1986 年（Noda 1986）在正弦拉伸应变影响下收集的聚合物的一系列红外光谱，后来在 1989 年和 1993 年推广了该方法（Noda 1989, 1993）
+
+* I. Noda (1993) <DOI:10.1366/0003702934067694>
+* I. Noda (2012) <DOI:10.1016/j.vibspec.2012.01.006>
+* R. Geitner et al. (2019) <DOI:10.18637/jss.v090.i03>
+
+```{r }
+testdata <- sim2ddata(C = NULL, Camp = NULL)
+```
+
+```{r fig.width=7, fig.height=3.5}
+p1 = plot_corr(testdata, type = 'COS', plot = 'Re', cores = 8)
+p2 = plot_corr(testdata, type = "COS", plot = "Im", cores = 8)
+p1 + p2 + plot_annotation(tag_levels = "a")
+```
+
+## 二维共分布光谱
+
+虽然2DCOS被广泛用于与光谱相关事件顺序的解释，但过去十多年中关于异步谱的解释存在较大的问题。自从最初的研究以来，文献中一直存在很多混乱，即异步图是否提供有关事件的局部顺序顺序、不同事件的发生率或每个物种的平均浓度变化率的可靠信息。大多数这些误解是由于缺乏对 2DCOS 背后的理论基础的理解。如果不了解解释规则背后的基本原理，通常称为“野田规则”，很容易误解 或过度解释 2DCOS 图中可用的序列信息。2014 年，Noda发表了一篇重要论文（I. Noda (2014) <DOI:10.1016/j.molstruc.2014.01.024>），强调了这些误解，并引入了一种新的互补方法，称为 2D Codistribution (2DCDS)，以试图消除对 2DCOS 的过度怀疑。论文明确指出，2DCOS可用于探测光谱强度变化的顺序，但并未直接说明物种（或结构）的顺序（but does not directly tell the orders of the distributed species (or structure)）。 专门开发了2DCDS新技术来解决这个问题，据报道它提供了物种沿扰动变量轴的分布序列。
+
+二维共分布光谱 (2DCDS) 是一种专门为分析种群动态而设计的技术，例如化学反应过程中物种的时间分布。二维共分布分析侧重于反映物种分布存在的信号特征，而不是传统上通过二维相关光谱 (2DCOS) 分析的扰动引起的与参考状态的偏差的变化模式。该技术源自在明确定义的观察间隔内沿扰动变量轴的光谱强度分布的矩分析。
+
+计算同步和异步共分布光谱（synchronous and asynchronous codistribution spectra）
+```{r fig.width=7, fig.height=3.5}
+p3 = plot_corr(testdata, type = 'CDS', plot = 'Re', cores = 8)
+p4 = plot_corr(testdata, type = "CDS", plot = "Im", cores = 8)
+p3 + p4 + plot_annotation(tag_levels = "a")
+```
+
