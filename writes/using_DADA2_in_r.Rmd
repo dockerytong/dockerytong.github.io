@@ -1,0 +1,231 @@
+---
+title: "Using DADA2 in R"
+output: 
+  html_document: 
+    toc: yes
+    fig_width: 5
+    fig_height: 4
+    number_sections: yes
+date: '2022-04-12'
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+```
+
+# 1.安装dada2
+
+安装dada2, 从bioconductor安装dada2，当前版本为3.14
+
+```{r}
+if(require(dada2)) {
+  print('DADA2 加载成功')
+} else{
+  print('安装DADA2')
+  BiocManager::install("dada2")
+}
+```
+
+# 2. 测试DADA2分析流程
+
+示例数据从此处[此处](https://mothur.s3.us-east-2.amazonaws.com/wiki/miseqsopdata.zip)下载
+
+```{r}
+path <- './MiSeq_SOP/' # 文件路径设置
+```
+
+## 2.1 读取文件 
+
+现在我们读入 fastq 文件的名称，并执行一些字符串操作以获得正向和反向 fastq
+文件的匹配列表。
+
+Forward and reverse fastq filenames have format: SAMPLENAME_R1_001.fastq and
+SAMPLENAME_R2_001.fastq
+
+```{r}
+fnFs <- sort(list.files(path, pattern="_R1_001.fastq", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern="_R2_001.fastq", full.names = TRUE)) 
+# 提取样本名 
+sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+```
+
+# 3. 质控
+
+## 3.1 查看质控图 
+
+正向
+
+```{r}
+plotQualityProfile(fnFs[1:2]) 
+```
+
+反向
+```{r}
+plotQualityProfile(fnRs[1:2])
+```
+
+## 3.2 过滤和修剪
+
+为过滤的 fastq.gz 文件分配文件名。
+
+Place filtered files in filtered/ subdirectory
+```{r}
+filtFs <- file.path(path, "filtered", paste0(sample.names, "_F_filt.fastq.gz"))
+filtRs <- file.path(path, "filtered", paste0(sample.names, "_R_filt.fastq.gz"))
+names(filtFs) <- sample.names
+names(filtRs) <- sample.names
+```
+
+我们将使用标准过滤参数：maxN=0（DADA2 不需要 N）truncQ=2、rm.phix=TRUE和maxEE=2。
+该maxEE参数设置读取中允许的“预期错误”的最大数量，这是一个比简单平均质量分数更好的过滤器。
+```{r}
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(240,160),
+                     maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
+                     compress=TRUE, multithread=FALSE) # On Windows set multithread=FALSE
+head(out)
+```
+
+
+# 4. 了解错误率
+
+```{r}
+errF <- learnErrors(filtFs, multithread=TRUE)
+errR <- learnErrors(filtRs, multithread=TRUE)
+```
+
+
+可视化误差
+```{r}
+plotErrors(errF, nominalQ=TRUE)
+```
+
+# 5. 样本推断
+
+```{r}
+dadaFs <- dada(filtFs, err = errF, multithread = TRUE)
+dadaRs <- dada(filtRs, err = errF, multithread = TRUE)
+```
+
+检查返回的dada-class对象：
+
+```{r}
+dadaFs[[1]]
+```
+
+# 6. 合并双端序列 
+```{r}
+mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
+# Inspect the merger data.frame from the first sample
+head(mergers[[1]])
+```
+
+# 7. 构建ASV表
+## 7.1 构建表 
+```{r}
+seqtab <- makeSequenceTable(mergers)
+dim(seqtab)
+```
+
+Inspect distribution of sequence lengths
+
+```{r}
+table(nchar(getSequences(seqtab)))
+```
+
+
+## 7.2. 移除嵌合体
+
+```{r}
+seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=FALSE, verbose=TRUE)
+dim(seqtab.nochim)
+sum(seqtab.nochim)/sum(seqtab)
+```
+
+# 8. 物种分类
+
+```{r}
+taxa <- assignTaxonomy(seqtab.nochim, "./tax/silva_nr99_v138.1_train_set.fa.gz", multithread=TRUE)
+```
+
+检查分类结果
+```{r}
+taxa.print <- taxa # Removing sequence rownames for display only
+rownames(taxa.print) <- NULL
+head(taxa.print)
+```
+
+# 9. 下游分析 
+
+```{r echo=FALSE}
+if (require(phyloseq)) {
+  print('DADA2 加载成功')
+} else{
+  print('安装phyloseq')
+  BiocManager::install('phyloseq')
+}
+
+require(tidyverse)
+
+theme_set(theme_bw())
+```
+
+## 9.1 构造phyloseq对象 
+
+meta info
+
+```{r}
+samples.out <- rownames(seqtab.nochim)
+subject <- sapply(strsplit(samples.out, "D"), `[`, 1)
+gender <- substr(subject,1,1)
+subject <- substr(subject,2,999)
+day <- as.integer(sapply(strsplit(samples.out, "D"), `[`, 2))
+samdf <- data.frame(Subject=subject, Gender=gender, Day=day)
+samdf$When <- "Early"
+samdf$When[samdf$Day>100] <- "Late"
+rownames(samdf) <- samples.out
+```
+
+build object
+
+```{r}
+ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE),
+               sample_data(samdf),
+               tax_table(taxa))
+ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
+
+dna <- Biostrings::DNAStringSet(taxa_names(ps))
+names(dna) <- taxa_names(ps)
+ps <- merge_phyloseq(ps, dna)
+taxa_names(ps) <- paste0("ASV", seq(ntaxa(ps)))
+ps
+```
+
+## 9.2 Alpha 多样性分析 
+
+```{r}
+plot_richness(ps, x="Day", measures=c("Shannon", "Simpson"), color="When")
+```
+
+## 9.3 NMDS 分析
+
+Transform data to proportions as appropriate for Bray-Curtis distances
+
+```{r}
+ps.prop <- transform_sample_counts(ps, function(otu) otu/sum(otu))
+ord.nmds.bray <- ordinate(ps.prop, method="NMDS", distance="bray")
+plot_ordination(ps.prop, ord.nmds.bray, color="When", title="Bray NMDS")
+```
+
+## 9.4 群落结构柱状图
+```{r}
+top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
+ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
+ps.top20 <- prune_taxa(top20, ps.top20)
+plot_bar(ps.top20, x="Day", fill="Family") + facet_wrap(~When, scales="free_x")
+```
+
+
+
