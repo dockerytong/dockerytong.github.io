@@ -23,6 +23,7 @@
 - [non-linear-fit](writes/non-linear_in_R.html) - 在R中简单的进行非线性拟合
 - [ode_in_R](writes/odeinR.html) - 使用R求解微分方程
 - [2dcos/cds](writes/2dcos.html) - 使用R进行二维光谱分析
+- [dada2_in)r](writes/using_DADA2_in_r.html) - 在R中使用DADA2
 
 ## 有用的教程收集
 
