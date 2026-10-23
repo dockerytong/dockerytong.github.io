@@ -34,6 +34,7 @@ SELF = ("Liu", "Tong")
 CORRESPONDING = {
     "10.1016/j.susmat.2025.e01460",
     "10.1016/j.marpolbul.2025.118205",
+    "10.1016/j.watres.2026.126137",
 }
 
 # Duplicate preprints of already published articles, and other noise.
