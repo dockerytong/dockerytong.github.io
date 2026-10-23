@@ -1,0 +1,357 @@
+/* Tong Liu — academic homepage. No external dependencies. */
+
+:root {
+  --ink: #1d2125;
+  --ink-soft: #4a5259;
+  --ink-faint: #6b747c;
+  --rule: #d9dde1;
+  --rule-soft: #eceef0;
+  --bg: #fdfdfc;
+  --accent: #3b5b7a;
+  --accent-soft: #eef2f6;
+  --code-bg: #f3f4f5;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Charter", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+    "Songti SC", "Noto Serif CJK SC", serif;
+  font-size: 17px;
+  line-height: 1.62;
+  text-rendering: optimizeLegibility;
+}
+
+.wrap {
+  max-width: 47rem;
+  margin: 0 auto;
+  padding: 0 1.4rem;
+}
+
+/* ---------- header ---------- */
+
+header.site {
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 1.5rem 0 1.1rem;
+  margin-bottom: 2.6rem;
+}
+
+header.site .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+}
+
+.site-name {
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.site-name span {
+  font-weight: 400;
+  color: var(--ink-faint);
+  font-size: 0.86rem;
+  margin-left: 0.55rem;
+  letter-spacing: 0.02em;
+}
+
+nav.site {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+}
+
+nav.site a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  margin-left: 1.1rem;
+}
+
+nav.site a:first-child { margin-left: 0; }
+
+nav.site a:hover { color: var(--accent); }
+
+nav.site a.here {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+}
+
+/* ---------- typography ---------- */
+
+h1 {
+  font-size: 1.72rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 0.86rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ink-faint);
+  margin: 2.9rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+h2:first-of-type { margin-top: 2.2rem; }
+
+h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 1.9rem 0 0.35rem;
+  line-height: 1.4;
+}
+
+p { margin: 0 0 1rem; }
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(59, 91, 122, 0.28); }
+a:hover { border-bottom-color: var(--accent); }
+
+strong { font-weight: 600; }
+
+em { font-style: italic; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule-soft);
+  margin: 2.4rem 0;
+}
+
+ul, ol { margin: 0 0 1rem; padding-left: 1.25rem; }
+li { margin-bottom: 0.4rem; }
+li::marker { color: var(--ink-faint); }
+
+/* ---------- lead block ---------- */
+
+.lede { font-size: 1.06rem; }
+
+.meta {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  margin: 0 0 1.6rem;
+}
+
+.meta .row { display: block; }
+
+.contact {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 1.4rem 0 0;
+}
+
+.contact a { border-bottom: none; }
+.contact .sep { color: var(--rule); margin: 0 0.5rem; }
+
+.zh {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  border-left: 2px solid var(--accent-soft);
+  padding-left: 1rem;
+  margin: 1.7rem 0 0;
+}
+
+.zh-label {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.3rem;
+}
+
+/* ---------- publication lists ---------- */
+
+ol.pubs { list-style: none; padding-left: 0; }
+
+ol.pubs li {
+  position: relative;
+  padding-left: 2.7rem;
+  margin-bottom: 1.15rem;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+ol.pubs .yr {
+  position: absolute;
+  left: 0;
+  top: 0.24rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+ol.pubs .jr { font-style: italic; }
+
+ol.pubs .me { font-weight: 600; }
+
+ol.pubs a { font-style: normal; }
+
+.role {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 3px;
+  padding: 0.05rem 0.32rem;
+  vertical-align: 0.12em;
+  margin-left: 0.25rem;
+}
+
+.note {
+  font-size: 0.88rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- thread cards ---------- */
+
+.thread {
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 1.3rem;
+  margin-top: 1.6rem;
+}
+
+.thread:first-of-type { border-top: 0; padding-top: 0; margin-top: 1rem; }
+
+.thread h3 { margin-top: 0; }
+
+.thread dl {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+}
+
+.thread dt {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: 0.28rem;
+}
+
+.thread dd { margin: 0; }
+
+/* ---------- CV tables ---------- */
+
+table.cv {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+  margin: 0 0 1rem;
+}
+
+table.cv td {
+  padding: 0.42rem 0;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+table.cv td.when {
+  width: 8.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  padding-right: 1rem;
+}
+
+table.cv td.what { text-align: right; color: var(--ink-soft); font-size: 0.86rem; }
+
+/* ---------- footer ---------- */
+
+footer.site {
+  margin-top: 4rem;
+  padding: 1.4rem 0 2.5rem;
+  border-top: 1px solid var(--rule-soft);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+footer.site .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.2rem;
+  justify-content: space-between;
+}
+
+/* ---------- notes ---------- */
+
+.note-list { list-style: none; padding-left: 0; }
+.note-list li { margin-bottom: 0.9rem; font-size: 0.96rem; }
+.note-list .desc { display: block; color: var(--ink-faint); font-size: 0.86rem; }
+
+/* markdown-converted notes */
+.note-body h1, .note-body h2, .note-body h3 { border: 0; }
+.note-body h2 {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1.05rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 1.8rem 0 0.5rem;
+}
+.note-body img { max-width: 100%; height: auto; }
+.note-body pre, .note-body code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  background: var(--code-bg);
+  border-radius: 3px;
+}
+.note-body pre { padding: 0.8rem 1rem; overflow-x: auto; }
+.note-body code { padding: 0.1rem 0.25rem; }
+.note-body pre code { padding: 0; background: none; }
+.note-body table { border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0; }
+.note-body th, .note-body td { border: 1px solid var(--rule); padding: 0.3rem 0.6rem; }
+.note-body blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 34rem) {
+  body { font-size: 16px; }
+  .wrap { padding: 0 1.1rem; }
+  header.site .wrap { display: block; }
+  nav.site { margin-top: 0.7rem; }
+  nav.site a:first-child { margin-left: 0; }
+  .thread dl { grid-template-columns: 1fr; gap: 0.1rem; }
+  .thread dt { padding-top: 0.5rem; }
+  table.cv td.when { width: auto; white-space: normal; }
+  table.cv td.what { text-align: left; }
+}
+
+@media print {
+  header.site, footer.site { display: none; }
+  body { font-size: 11pt; background: #fff; }
+  a { color: var(--ink); border: 0; }
+  h2 { page-break-after: avoid; }
+}

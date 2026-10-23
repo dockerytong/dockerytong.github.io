@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes — Tong Liu</title>
+<meta name="description" content="Archived working notes: DFT workflows, ASE structures, R for data analysis, amplicon pipelines.">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="site-name" href="../index.html">Tong Liu <span>刘通</span></a>
+    <nav class="site">
+      <a href="../index.html">About</a>
+      <a href="../research.html">Research</a>
+      <a href="../publications.html">Publications</a>
+      <a href="../cv.html">CV</a>
+      <a class="here" href="index.html">Notes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h1>Notes</h1>
+
+  <p class="lede">
+    Working notes, kept because someone else may need the same steps. Written between 2021 and 2023
+    while I was learning these tools; they are archived as written and not updated. Anything numerical
+    in them should be re-checked against current software versions.
+  </p>
+
+  <h2>Calculations</h2>
+
+  <ul class="note-list">
+    <li>
+      <a href="dftbook.html">Building nanostructures with ASE and running Quantum ESPRESSO</a>
+      <span class="desc">Structure construction from scratch, pseudopotentials, k-points, and the
+        input files for a first QE run. Long-form, in Chinese.</span>
+    </li>
+    <li>
+      <a href="qe-compile.html">Compiling GPU-accelerated Quantum ESPRESSO in WSL2</a>
+      <span class="desc">Toolchain, CMake flags, and the errors that actually appear.</span>
+    </li>
+  </ul>
+
+  <h2>Data analysis in R</h2>
+
+  <ul class="note-list">
+    <li>
+      <a href="using_DADA2_in_r.html">Amplicon analysis with DADA2</a>
+      <span class="desc">From raw reads to an ASV table, with the filtering parameters spelled out.</span>
+    </li>
+    <li>
+      <a href="non-linear_in_R.html">Non-linear fitting in R</a>
+      <span class="desc">nls and friends, with the convergence problems that follow.</span>
+    </li>
+    <li>
+      <a href="odeinR.html">Solving ODEs in R</a>
+      <span class="desc">Kinetic models of degradation and growth, fitted to data.</span>
+    </li>
+    <li>
+      <a href="2dcos.html">Two-dimensional correlation spectroscopy in R</a>
+      <span class="desc">2D-COS and 2D-CDS for spectra that change with a perturbation.</span>
+    </li>
+    <li>
+      <a href="cell-growth.html">Measuring cell growth</a>
+      <span class="desc">Methods and pitfalls for growth curves and specific growth rates.</span>
+    </li>
+  </ul>
+
+  <h2>Writing and tooling</h2>
+
+  <ul class="note-list">
+    <li>
+      <a href="manuscript-writing.html">A minimal manuscript template</a>
+      <span class="desc">Section-by-section skeleton for an environmental science paper.</span>
+    </li>
+    <li>
+      <a href="zotero-vscode.html">Linking Zotero with VS Code</a>
+      <span class="desc">Citation keys in Markdown without leaving the editor.</span>
+    </li>
+    <li>
+      <a href="groups.html">Groups and links worth following</a>
+      <span class="desc">Mineral surface science, computational geochemistry, and interface groups.</span>
+    </li>
+  </ul>
+
+  <p class="note">
+    Sources for the R notebooks (.Rmd, .ipynb) are kept in <code>notes/src</code> in the repository.
+  </p>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 Tong Liu</span>
+    <span><a href="../index.html">← back</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

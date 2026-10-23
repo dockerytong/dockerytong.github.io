@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linking Zotero with VS Code — notes — Tong Liu</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="site-name" href="../index.html">Tong Liu <span>刘通</span></a>
+    <nav class="site">
+      <a href="../index.html">About</a>
+      <a href="../research.html">Research</a>
+      <a href="../publications.html">Publications</a>
+      <a href="../cv.html">CV</a>
+      <a class="here" href="index.html">Notes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap note-body">
+
+<h1>Linking Zotero with VS Code</h1>
+
+<p class="note">Archived note from the earlier notes site; kept as written, not updated. Kept as it was; not updated.</p>
+
+<h1 id="zotero_vscode">zotero_vscode</h1>
+<h2 id="配置vscode和zotero链接">配置vscode和zotero链接</h2>
+<ol type="1">
+<li>Zotero中安装<a
+href="https://retorque.re/zotero-better-bibtex">BetterBibTeX</a></li>
+<li>VScode中安装<a
+href="https://marketplace.visualstudio.com/items?itemName=mblode.zotero">Citation
+Picker for Zotero</a></li>
+<li>从此<a
+href="https://retorque.re/zotero-better-bibtex/exporting/zotero.lua">链接</a>在工作目录中下载zotero.lua文件</li>
+<li>在vscode
+pandoc插件设置中加入<code>-s --lua-filter=zotero.lua</code>字段</li>
+<li>在markdown yaml中加入
+<code>yaml     zotero:         client: zotero</code></li>
+<li>开始写作</li>
+</ol>
+
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 Tong Liu</span>
+    <span><a href="index.html">← all notes</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

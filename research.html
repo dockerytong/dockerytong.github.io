@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — Tong Liu</title>
+<meta name="description" content="Research threads: pyrite oxidation and electron budgets, mineral photocatalysis in the euphotic zone, reductive pyrite transformation, and tailings-to-soil formation.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="site-name" href="index.html">Tong Liu <span>刘通</span></a>
+    <nav class="site">
+      <a href="index.html">About</a>
+      <a class="here" href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="cv.html">CV</a>
+      <a href="notes/index.html">Notes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <h1>Research</h1>
+
+  <p class="lede">
+    One question runs through everything below: which interface variables can be observed, which can be
+    manipulated, and where do the two sets overlap. An electrode is useful precisely because it sits in
+    the overlap — it reports electron flux and imposes potential with the same device. Work that can
+    only watch a mineral–water interface runs open loop; work that can also drive it closes the loop.
+  </p>
+
+  <p>
+    I have kept this framing across four systems at different scales, and in each one the first task is
+    the same: establish the transfer function, then test whether it can be driven.
+  </p>
+
+  <h2>Current threads</h2>
+
+  <div class="thread">
+    <h3>Pyrite oxidation when oxygen is not the acceptor</h3>
+    <dl>
+      <dt>Question</dt>
+      <dd>Under circumnatural, anoxic conditions pyrite still oxidizes, and the rate is fast enough to
+        support autotrophic denitrification. What actually sets that rate?</dd>
+      <dt>Finding</dt>
+      <dd>The answer is not oxygen supply but the electron budget: raising the redox potential of the
+        solution accelerates pyrite oxidation under neutral pH, and the surface either keeps transferring
+        electrons or passivates depending on how the potential is held. <em>J. Hazard. Mater.</em> 2021;
+        <em>Electrochim. Acta</em> 2021.</dd>
+      <dt>Lever</dt>
+      <dd>If the rate is set by the electron budget, it should respond to an applied potential rather than
+        to dosing. In-operando electrochemical stimulation of pyrite autotrophic denitrification confirms
+        that it does. <em>Nitrogen Cycling</em> 2026.</dd>
+      <dt>Mechanism</dt>
+      <dd>Passivation is not a fixed property of the surface: cysteine adsorption weakens the Fe–S lattice
+        and lets oxidation proceed, so organic coverage can switch the interface between passivated and
+        active. <em>Appl. Surf. Sci.</em> 2025.</dd>
+    </dl>
+  </div>
+
+  <div class="thread">
+    <h3>Mineral photocatalysis and iron cycling in the euphotic zone</h3>
+    <dl>
+      <dt>Question</dt>
+      <dd>Seawater carries semiconductor mineral particles and dissolved iron that microbes need. Light
+        is the largest periodic input to that zone — does it set the Fe(II)/Fe(III) ratio?</dd>
+      <dt>Finding</dt>
+      <dd>Mineral photocatalysis sustains Fe(II)/Fe(III) cycling in the euphotic zone, which makes light a
+        control input on iron speciation rather than a background condition. <em>Nat. Commun.</em> 2026.</dd>
+      <dt>Why it matters</dt>
+      <dd>Iron speciation is normally treated as a consequence of redox chemistry and biology. If
+        photocatalysis sets it, then the same interface is doing the converting, and the daily light cycle
+        is an input that can be counted rather than averaged away.</dd>
+    </dl>
+  </div>
+
+  <div class="thread">
+    <h3>The reductive side of pyrite</h3>
+    <dl>
+      <dt>Question</dt>
+      <dd>Pyrite oxidation is well mapped. What happens to the same mineral under reducing conditions, and
+        is the transformation path symmetric?</dd>
+      <dt>Observation</dt>
+      <dd>In situ Raman indicates that pyrite transforms readily under reducing conditions while oxidation
+        is comparatively difficult — the opposite of the usual expectation. The mechanism is not yet
+        resolved, and I treat that as the open problem rather than a result.</dd>
+      <dt>Status</dt>
+      <dd>In progress, with DFT on the reductive pathway. Oxidation and reduction form a matched pair, so a
+        mechanism that holds for both would be the cleanest evidence that the interface is controllable
+        and not just describable.</dd>
+    </dl>
+  </div>
+
+  <div class="thread">
+    <h3>Tailings to soil: aggregates, metals, and organic matter</h3>
+    <dl>
+      <dt>Question</dt>
+      <dd>Tailings spontaneously develop soil-like structure. Which interfacial reactions do the cementing,
+        and can they be steered?</dd>
+      <dt>Approach</dt>
+      <dd>Paired long-term incubation and field samples, with structure (aggregate stability, µCT),
+        element speciation (XAS, XPS), and electrochemistry on the same sample IDs, so that a change in
+        mineral phase can be read against a change in structure and in metal mobility.</dd>
+      <dt>Status</dt>
+      <dd>Current group programme. The computational part is mine: interface energetics and phase
+        transformation pathways at the atomistic level, plus machine-learned potentials where they are
+        trustworthy and not where they are not.</dd>
+    </dl>
+  </div>
+
+  <h2>Methods</h2>
+
+  <p>
+    Electrochemistry is the core: cyclic voltammetry, impedance (including dynamic impedance during
+    reaction), chronoamperometry, and in-operando cells that follow a mineral surface while it reacts.
+    Structure and speciation come from Raman and infrared spectroscopy, XPS, and synchrotron XAS; the
+    atomistic side is DFT (adsorption, lattice response, electron transfer paths) with machine-learned
+    interatomic potentials used for sampling and screening. Microbial community composition is read from
+    amplicon and metagenomic data when the question is who is consuming the electrons.
+  </p>
+
+  <p class="note">
+    On machine-learned potentials: I use them for ranking and trends, not for absolute energetics at
+    metal–oxide interfaces, and I check the geometry they produce before believing an energy. Details in
+    <a href="notes/index.html">Notes</a>.
+  </p>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 Tong Liu</span>
+    <span>Last updated October 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
