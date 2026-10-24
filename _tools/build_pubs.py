@@ -91,6 +91,13 @@ JOURNAL_ABBREV = {
 }
 
 
+def date_key(item):
+    """Sort by year first, then by the raw Zotero date string (year-month-day)."""
+    d = (item.get("date") or "").strip()
+    m = re.match(r"(\d{4})", d)
+    return (int(m.group(1)) if m else 0, d)
+
+
 def initials(first):
     parts = re.split(r"[\s.\-]+", first.strip())
     return " ".join(p[0].upper() + "." for p in parts if p)
@@ -252,7 +259,7 @@ def main():
              and x.get("publicationTitle")
              and x.get("DOI") not in SKIP_DOIS]
     items += EXTRA
-    items.sort(key=lambda x: (x.get("date") or "", x.get("publicationTitle") or ""), reverse=True)
+    items.sort(key=date_key, reverse=True)
 
     first = [i for i in items if role_of(i) == "first"]
     corr = [i for i in items if role_of(i) == "corr"]
@@ -264,7 +271,7 @@ def main():
         for i in group:
             print("  ", (i.get('date') or '')[:4], clean(i.get('publicationTitle')), "|", clean(i.get('title'))[:60])
 
-    lead = "\n".join(entry(i) for i in first + corr)
+    lead = "\n".join(entry(i) for i in sorted(first + corr, key=date_key, reverse=True))
     rest = "\n".join(entry(i) for i in co)
 
     page = PAGE.format(
