@@ -60,12 +60,12 @@ EXTRA = [
          creators=[dict(lastName="刘", firstName="通")], DOI=None,
          volume=None, pages=None, extra_authors="孟令子, 葛潇, 刘菲菲, 丁竑瑞, 鲁安怀",
          note="in Chinese"),
-    dict(date="", publicationTitle="Acta Mineralogica Sinica",
+    dict(date="2026", publicationTitle="Acta Mineralogica Sinica",
          title="河口盐度梯度下水铁矿界面光催化转化及有机碳保留-转化机制",
          creators=[dict(lastName="孟", firstName="令子"), dict(lastName="刘", firstName="通"),
                    dict(lastName="丁", firstName="竑瑞"), dict(lastName="鲁", firstName="安怀")],
          DOI=None, volume=None, pages=None,
-         note="in Chinese; details to be completed"),
+         note="in Chinese; volume, pages, and DOI to be completed"),
 ]
 
 JOURNAL_ABBREV = {
