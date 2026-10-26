@@ -55,17 +55,27 @@ SKIP_DOIS = {
 }
 
 # Extra records not in the Zotero library (manual entries).
+# `issue` is only rendered when `volume` is set.
 EXTRA = [
-    dict(date="2025", publicationTitle="Earth Science Frontiers", title="生物可利用性煤源有机质：机制、影响因素与应用前景",
-         creators=[dict(lastName="刘", firstName="通")], DOI=None,
-         volume=None, pages=None, extra_authors="孟令子, 葛潇, 刘菲菲, 丁竑瑞, 鲁安怀",
-         note="in Chinese"),
+    dict(date="2026", publicationTitle="Earth Science Frontiers",
+         title="煤源有机质生物可利用性机制、影响因素与应用前景",
+         creators=[dict(lastName="刘", firstName="通")], DOI="10.13745/j.esf.sf.2025.5.4",
+         volume="33", issue="5", pages="471-486",
+         extra_authors="孟令子, 葛潇, 刘菲菲, 丁竑瑞, 鲁安怀",
+         note="in Chinese; published online 2025"),
     dict(date="2026", publicationTitle="Acta Mineralogica Sinica",
          title="河口盐度梯度下水铁矿界面光催化转化及有机碳保留-转化机制",
          creators=[dict(lastName="孟", firstName="令子"), dict(lastName="刘", firstName="通"),
                    dict(lastName="丁", firstName="竑瑞"), dict(lastName="鲁", firstName="安怀")],
          DOI=None, volume=None, pages=None,
          note="in Chinese; volume, pages, and DOI to be completed"),
+    dict(date="2022", publicationTitle="Geoscience",
+         title="麦饭石促进异养反硝化去除水中硝酸盐的研究",
+         creators=[dict(lastName="刘", firstName="文君"), dict(lastName="刘", firstName="通"),
+                   dict(lastName="胡", firstName="伟武"), dict(lastName="陈", firstName="男"),
+                   dict(lastName="冯", firstName="传平")],
+         DOI="10.19657/j.geoscience.1000-8527.2021.105", volume=None, pages="574-582",
+         note="in Chinese; volume not confirmed"),
 ]
 
 JOURNAL_ABBREV = {
@@ -103,6 +113,7 @@ JOURNAL_ABBREV = {
     "Nitrogen Cycling": "Nitrogen Cycling",
     "Earth Science Frontiers": "Earth Sci. Front.",
     "Acta Mineralogica Sinica": "Acta Mineral. Sin.",
+    "Geoscience": "Geoscience",
 }
 
 
@@ -186,6 +197,8 @@ def entry(item):
     tail = ""
     if vol:
         tail = f" <strong>{html.escape(str(vol))}</strong>"
+        if item.get("issue"):
+            tail += f"({html.escape(str(item['issue']))})"
         if pages:
             tail += f", {html.escape(pages)}"
     elif pages:
