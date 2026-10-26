@@ -37,6 +37,14 @@ CORRESPONDING = {
     "10.1016/j.watres.2026.126137",
 }
 
+# Papers where Tong Liu shares first authorship (co-first), confirmed by the user.
+CO_FIRST = {
+    "10.1016/j.matlet.2024.136135",
+    "10.1016/j.jhazmat.2022.128258",
+    "10.1016/j.chemosphere.2021.132476",
+    "10.1016/j.scitotenv.2021.147396",
+}
+
 # Duplicate preprints of already published articles, and other noise.
 SKIP_DOIS = {
     "10.2139/ssrn.4379128",   # -> Chem. Eng. J. 2023
@@ -144,8 +152,10 @@ def role_of(item):
         return "co"
     if is_self(authors[0]):
         return "first"
-    if item.get("DOI") in CORRESPONDING or is_self(authors[-1]):
-        return "corr" if item.get("DOI") in CORRESPONDING else "co"
+    if item.get("DOI") in CORRESPONDING:
+        return "corr"
+    if item.get("DOI") in CO_FIRST:
+        return "cofirst"
     return "co"
 
 
@@ -161,7 +171,8 @@ def entry(item):
             marked.append(html.escape(a))
     role = role_of(item)
     badge = {"first": '<span class="role">first</span>',
-             "corr": '<span class="role">corresp.</span>'}.get(role, "")
+             "corr": '<span class="role">corresp.</span>',
+             "cofirst": '<span class="role">co-first</span>'}.get(role, "")
     year = (item.get("date") or "")[:4]
     journal = fmt_journal(item.get("publicationTitle", ""))
     vol = item.get("volume")
@@ -217,11 +228,12 @@ PAGE = """<!doctype html>
   <h1>Publications</h1>
 
   <p class="note">
-    {n_lead} papers as first or corresponding author, {n_co} as co-author. Regenerated from my Zotero
-    library; also indexed on <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
+    {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author.
+    Regenerated from my Zotero library; also indexed on
+    <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
   </p>
 
-  <h2>First and corresponding author</h2>
+  <h2>First, co-first, and corresponding author</h2>
 
   <ol class="pubs">
 {lead}
@@ -263,25 +275,30 @@ def main():
 
     first = [i for i in items if role_of(i) == "first"]
     corr = [i for i in items if role_of(i) == "corr"]
+    cofirst = [i for i in items if role_of(i) == "cofirst"]
     co = [i for i in items if role_of(i) == "co"]
 
-    print("first:", len(first), "corr:", len(corr), "co:", len(co), "total:", len(items))
-    for label, group in (("FIRST", first), ("CORR", corr)):
+    print("first:", len(first), "corr:", len(corr), "cofirst:", len(cofirst),
+          "co:", len(co), "total:", len(items))
+    for label, group in (("FIRST", first), ("CORR", corr), ("CO-FIRST", cofirst)):
         print(f"--- {label}")
         for i in group:
             print("  ", (i.get('date') or '')[:4], clean(i.get('publicationTitle')), "|", clean(i.get('title'))[:60])
 
-    lead = "\n".join(entry(i) for i in sorted(first + corr, key=date_key, reverse=True))
+    lead_items = sorted(first + corr + cofirst, key=date_key, reverse=True)
+    lead = "\n".join(entry(i) for i in lead_items)
     rest = "\n".join(entry(i) for i in co)
 
     page = PAGE.format(
         lead=lead,
         rest=rest,
-        n_lead=len(first) + len(corr),
+        n_lead=len(lead_items),
+        n_cofirst=len(cofirst),
         n_co=len(co),
     )
     (ROOT / "publications.html").write_text(page)
-    print(f"wrote publications.html ({len(first)+len(corr)} lead, {len(co)} co-authored)")
+    print(f"wrote publications.html ({len(lead_items)} lead incl. {len(cofirst)} co-first, "
+          f"{len(co)} co-authored)")
 
 
 if __name__ == "__main__":
