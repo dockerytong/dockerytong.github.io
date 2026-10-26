@@ -60,6 +60,12 @@ EXTRA = [
          creators=[dict(lastName="刘", firstName="通")], DOI=None,
          volume=None, pages=None, extra_authors="孟令子, 葛潇, 刘菲菲, 丁竑瑞, 鲁安怀",
          note="in Chinese"),
+    dict(date="", publicationTitle="Acta Mineralogica Sinica",
+         title="河口盐度梯度下水铁矿界面光催化转化及有机碳保留-转化机制",
+         creators=[dict(lastName="孟", firstName="令子"), dict(lastName="刘", firstName="通"),
+                   dict(lastName="丁", firstName="竑瑞"), dict(lastName="鲁", firstName="安怀")],
+         DOI=None, volume=None, pages=None,
+         note="in Chinese; details to be completed"),
 ]
 
 JOURNAL_ABBREV = {
@@ -96,6 +102,7 @@ JOURNAL_ABBREV = {
     "Journal of Chemical Technology & Biotechnology": "J. Chem. Technol. Biotechnol.",
     "Nitrogen Cycling": "Nitrogen Cycling",
     "Earth Science Frontiers": "Earth Sci. Front.",
+    "Acta Mineralogica Sinica": "Acta Mineral. Sin.",
 }
 
 
@@ -158,7 +165,6 @@ def role_of(item):
         return "cofirst"
     return "co"
 
-
 def entry(item):
     authors = author_list(item.get("creators", []))
     if item.get("extra_authors"):
@@ -189,11 +195,11 @@ def entry(item):
     if doi:
         doi_html = f' <a href="https://doi.org/{html.escape(doi)}">doi</a>'
     title = html.escape(clean(item.get("title"))).replace("&lt;i&gt;", "").replace("&lt;/i&gt;", "")
-    zh = " (in Chinese)" if item.get("note") == "in Chinese" else ""
+    zh = " (in Chinese)" if (item.get("note") or "").startswith("in Chinese") else ""
     auth = ", ".join(marked).rstrip(".")
     ref = f'<span class="jr">{html.escape(journal)}</span>{tail}'
     visible_tail = (tail or journal).strip()
-    if not visible_tail.endswith("."):
+    if visible_tail and not visible_tail.endswith("."):
         ref += "."
     return (f'<li><span class="yr">{html.escape(year)}</span>'
             f'{auth}. {title}. {ref}{zh}{doi_html}{(" " + badge) if badge else ""}</li>')
