@@ -270,8 +270,9 @@ PAGE = """<!doctype html>
   <h1>Publications</h1>
 
   <p class="note">
-    {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author,
-    grouped by research thread; the earlier water-treatment and groundwater work is listed last.
+    {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author.
+    Grouped first by authorship role, then by research thread; the earlier water-treatment and
+    groundwater work is listed last within each group.
     Also indexed on <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
   </p>
 
@@ -319,15 +320,10 @@ def main():
 
     lead_items = sorted(first + corr + cofirst, key=date_key, reverse=True)
 
-    sections = []
-    for name, _, _ in THREADS:
-        group = [i for i in items if thread_of(i) == name]
-        print(f"--- {name}: {len(group)}")
-        sections.append(section(name, group))
-    earlier = [i for i in items if thread_of(i) is None]
-    print(f"--- {EARLIER_HEADING}: {len(earlier)}")
-    sections.append(section(EARLIER_HEADING, earlier))
-    sections_html = "\n\n".join(sections)
+    sections_html = "\n\n".join([
+        group_html("First, co-first, and corresponding author", lead_items),
+        group_html("Co-authored", co),
+    ])
 
     page = PAGE.format(
         sections=sections_html,
@@ -342,7 +338,20 @@ def main():
 
 def section(title, group):
     body = "\n".join(entry(i) for i in group)
-    return f'  <h2>{html.escape(title)}</h2>\n\n  <ol class="pubs">\n{body}\n  </ol>'
+    return f'  <h3>{html.escape(title)}</h3>\n\n  <ol class="pubs">\n{body}\n  </ol>'
+
+
+def group_html(label, group):
+    """One role block (h2) with one h3 subsection per thread, empty ones skipped."""
+    parts = [f'  <h2>{html.escape(label)}</h2>']
+    for name, _, _ in THREADS:
+        sub = [i for i in group if thread_of(i) == name]
+        if sub:
+            parts.append(section(name, sub))
+    sub = [i for i in group if thread_of(i) is None]
+    if sub:
+        parts.append(section(EARLIER_HEADING, sub))
+    return "\n\n".join(parts)
 
 
 def thread_of(item):
