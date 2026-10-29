@@ -258,6 +258,7 @@ PAGE = """<!doctype html>
     <nav class="site">
       <a href="index.html">About</a>
       <a href="research.html">Research</a>
+      <a href="methods.html">Methods</a>
       <a class="here" href="publications.html">Publications</a>
       <a href="cv.html">CV</a>
       <a href="notes/index.html">Notes</a>
