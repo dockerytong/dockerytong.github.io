@@ -231,7 +231,7 @@ PAGE = """<!doctype html>
 
 <header class="site">
   <div class="wrap">
-    <a class="site-name" href="index.html">Tong Liu <span>刘通</span></a>
+    <a class="site-name" href="index.html">Tong Liu</a>
     <nav class="site">
       <a href="index.html">About</a>
       <a href="research.html">Research</a>
