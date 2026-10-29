@@ -78,6 +78,29 @@ EXTRA = [
          note="in Chinese; volume not confirmed"),
 ]
 
+# Field sections in display order, matching the three threads on research.html.
+# DOI-keyed; no-DOI records are matched by a lowercase title fragment.
+THREADS = [
+    ("Sulfide mineral interfaces: oxidation and reduction", {
+        "10.1016/j.electacta.2021.139078",
+        "10.1016/j.jhazmat.2021.125844",
+        "10.1016/j.apsusc.2025.163594",
+        "10.1039/d0ra01177k",
+        "10.1016/j.seppur.2026.140480",
+    }, ("electrochemical stimulation",)),
+    ("Mineral photocatalysis and iron cycling in the euphotic zone", {
+        "10.1038/s41467-026-73469-3",
+        "10.1016/j.marpolbul.2025.118205",
+        "10.1080/01490451.2025.2523822",
+        "10.3390/catal15080739",
+        "10.1016/j.matlet.2024.136135",
+    }, ("水铁矿光催化",)),
+    ("Tailings to soil: aggregates, metals, and organic matter", {
+        "10.1038/s43247-026-03718-2",
+    }, ("vegetation succession",)),
+]
+EARLIER_HEADING = "Earlier work: water treatment and groundwater remediation"
+
 JOURNAL_ABBREV = {
     "Nature Communications": "Nat. Commun.",
     "Environmental Science & Technology": "Environ. Sci. Technol.",
@@ -247,22 +270,12 @@ PAGE = """<!doctype html>
   <h1>Publications</h1>
 
   <p class="note">
-    {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author.
-    Regenerated from my Zotero library; also indexed on
-    <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
+    {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author,
+    grouped by research thread; the earlier water-treatment and groundwater work is listed last.
+    Also indexed on <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
   </p>
 
-  <h2>First, co-first, and corresponding author</h2>
-
-  <ol class="pubs">
-{lead}
-  </ol>
-
-  <h2>Co-authored</h2>
-
-  <ol class="pubs">
-{rest}
-  </ol>
+{sections}
 
   <p class="note">
     Conference presentations and invited talks are listed on the <a href="cv.html">CV</a> page.
@@ -305,12 +318,19 @@ def main():
             print("  ", (i.get('date') or '')[:4], clean(i.get('publicationTitle')), "|", clean(i.get('title'))[:60])
 
     lead_items = sorted(first + corr + cofirst, key=date_key, reverse=True)
-    lead = "\n".join(entry(i) for i in lead_items)
-    rest = "\n".join(entry(i) for i in co)
+
+    sections = []
+    for name, _, _ in THREADS:
+        group = [i for i in items if thread_of(i) == name]
+        print(f"--- {name}: {len(group)}")
+        sections.append(section(name, group))
+    earlier = [i for i in items if thread_of(i) is None]
+    print(f"--- {EARLIER_HEADING}: {len(earlier)}")
+    sections.append(section(EARLIER_HEADING, earlier))
+    sections_html = "\n\n".join(sections)
 
     page = PAGE.format(
-        lead=lead,
-        rest=rest,
+        sections=sections_html,
         n_lead=len(lead_items),
         n_cofirst=len(cofirst),
         n_co=len(co),
@@ -318,6 +338,21 @@ def main():
     (ROOT / "publications.html").write_text(page)
     print(f"wrote publications.html ({len(lead_items)} lead incl. {len(cofirst)} co-first, "
           f"{len(co)} co-authored)")
+
+
+def section(title, group):
+    body = "\n".join(entry(i) for i in group)
+    return f'  <h2>{html.escape(title)}</h2>\n\n  <ol class="pubs">\n{body}\n  </ol>'
+
+
+def thread_of(item):
+    """Return the thread name for an item, or None for earlier work."""
+    doi = item.get("DOI")
+    title_l = clean(item.get("title", "")).lower()
+    for name, dois, title_frags in THREADS:
+        if (doi and doi in dois) or any(f in title_l for f in title_frags):
+            return name
+    return None
 
 
 if __name__ == "__main__":
