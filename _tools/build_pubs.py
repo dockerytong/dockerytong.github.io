@@ -35,6 +35,7 @@ CORRESPONDING = {
     "10.1016/j.susmat.2025.e01460",
     "10.1016/j.marpolbul.2025.118205",
     "10.1016/j.watres.2026.126137",
+    "10.1016/j.jhazmat.2026.144077",
 }
 
 # Papers where Tong Liu shares first authorship (co-first), confirmed by the user.
@@ -87,6 +88,7 @@ THREADS = [
         "10.1016/j.apsusc.2025.163594",
         "10.1039/d0ra01177k",
         "10.1016/j.seppur.2026.140480",
+        "10.1016/j.jhazmat.2026.144077",
     }, ("electrochemical stimulation",)),
     ("Mineral photocatalysis and iron cycling in the euphotic zone", {
         "10.1038/s41467-026-73469-3",
