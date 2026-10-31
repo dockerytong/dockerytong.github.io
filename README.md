@@ -5,6 +5,7 @@ Source of <https://dockerytong.github.io/>. Plain static HTML and one CSS file, 
 ```
 index.html          about
 research.html       research threads
+methods.html        methods and capabilities
 publications.html   generated — do not edit by hand
 cv.html             positions, education, grants, talks
 notes/              archived working notes (2021–2023)

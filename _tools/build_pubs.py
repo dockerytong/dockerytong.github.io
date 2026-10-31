@@ -234,13 +234,14 @@ def entry(item):
         doi_html = f' <a href="https://doi.org/{html.escape(doi)}">doi</a>'
     title = html.escape(clean(item.get("title"))).replace("&lt;i&gt;", "").replace("&lt;/i&gt;", "")
     zh = " (in Chinese)" if (item.get("note") or "").startswith("in Chinese") else ""
-    auth = ", ".join(marked).rstrip(".")
+    auth = ", ".join(marked)
+    auth_sep = "" if auth.endswith(".") or auth.endswith(".</span>") else "."
     ref = f'<span class="jr">{html.escape(journal)}</span>{tail}'
     visible_tail = (tail or journal).strip()
     if visible_tail and not visible_tail.endswith("."):
         ref += "."
     return (f'<li><span class="yr">{html.escape(year)}</span>'
-            f'{auth}. {title}. {ref}{zh}{doi_html}{(" " + badge) if badge else ""}</li>')
+            f'{auth}{auth_sep} {title}. {ref}{zh}{doi_html}{(" " + badge) if badge else ""}</li>')
 
 
 PAGE = """<!doctype html>
@@ -249,7 +250,14 @@ PAGE = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Publications — Tong Liu</title>
-<meta name="description" content="Publications by Tong Liu on pyrite oxidation, mineral photocatalysis, iron cycling, and mineral-interface reactivity.">
+<meta name="description" content="Publications by Tong Liu on pyrite oxidation, mineral photocatalysis, iron cycling, organo-mineral coupling, and mineral-interface reactivity.">
+<link rel="canonical" href="https://dockerytong.github.io/publications.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tong Liu">
+<meta property="og:title" content="Publications — Tong Liu">
+<meta property="og:description" content="Publications by Tong Liu on sulfide mineral interfaces, mineral photocatalysis, and tailings-to-soil formation.">
+<meta property="og:url" content="https://dockerytong.github.io/publications.html">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -276,7 +284,7 @@ PAGE = """<!doctype html>
     {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author.
     Grouped first by authorship role, then by research thread; the earlier water-treatment and
     groundwater work is listed last within each group.
-    Also indexed on <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
+    Also indexed on <a href="https://scholar.google.com/citations?user=Fs0dsfMAAAAJ&amp;hl=en">Google Scholar</a>, <a href="https://www.researchgate.net/profile/Tong-Liu-25">ResearchGate</a>, and <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
   </p>
 
 {sections}

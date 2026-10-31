@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Methods — Tong Liu</title>
 <meta name="description" content="Methods and tools: electrochemistry, synchrotron spectroscopy method development, hyperspectral data-analysis pipelines, DFT and machine-learned potentials, amplicon and metagenomic analysis.">
+<link rel="canonical" href="https://dockerytong.github.io/methods.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tong Liu">
+<meta property="og:title" content="Methods — Tong Liu">
+<meta property="og:description" content="Electrochemistry, synchrotron spectroscopy method development, hyperspectral analysis pipelines, DFT and machine-learned potentials, and microbial community analysis.">
+<meta property="og:url" content="https://dockerytong.github.io/methods.html">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -37,37 +44,41 @@
 
   <p>
     The core technique: cyclic voltammetry, impedance including dynamic EIS during reaction,
-    chronoamperometry, and in-operando cells that follow a mineral surface while it reacts.
+    chronoamperometry, and in-operando cells that follow a mineral surface while it reacts — separating
+    interfacial charge transfer from passivating film growth and mass transport under realistic pH and
+    electrolyte conditions.
   </p>
 
   <h2>Synchrotron spectroscopy and speciation</h2>
 
   <p>
-    Structure and speciation from synchrotron XAS, XPS, and Raman and infrared spectroscopy. I develop
-    the measurement methods behind this work, and the geochemical characterization across the group's
-    projects is managed on this side.
+    Structure and oxidation-state speciation from synchrotron XAS and STXM, paired with XPS, Raman, and
+    infrared spectroscopy. I develop the measurement and data-reduction workflows behind this work and
+    coordinate the geochemical characterization across the group's projects.
   </p>
 
   <h2>Hyperspectral data analysis</h2>
 
   <p>
-    Currently the main development effort: software and data-analysis pipelines that turn hyperspectral
-    measurements into analysis-ready geochemical information.
+    Currently the main development effort: software and automated pipelines for preprocessing,
+    cross-modal registration, and spectral unmixing that turn spatially resolved hyperspectral maps into
+    quantitative mineral and organic-matter distributions.
   </p>
 
   <h2>Computation</h2>
 
   <p>
-    DFT for adsorption, lattice response, and electron-transfer paths (VASP, ABACUS, Quantum ESPRESSO,
-    CP2K; ORCA and Gaussian for molecular and cluster systems), with conformer and cluster search from
-    xTB and ABCluster and ASE-based workflow automation. Machine-learned interatomic potentials (MACE)
-    are used for sampling and screening.
+    First-principles modelling of adsorption, lattice response, constant-potential electrochemical
+    interfaces, and spin-polarized transition-metal/lanthanide oxide surfaces (VASP, ABACUS, Quantum
+    ESPRESSO, CP2K; ORCA and Gaussian for molecular and cluster systems), with conformer and cluster
+    search from xTB and ABCluster and ASE-based workflow automation. Machine-learned interatomic
+    potentials (MACE) are used for configurational sampling and site screening prior to DFT refinement.
   </p>
 
   <p class="note">
-    On machine-learned potentials: I use them for ranking and trends, not for absolute energetics at
-    metal–oxide interfaces, and I check the geometry they produce before believing an energy. Details in
-    <a href="notes/index.html">Notes</a>.
+    On machine-learned potentials: I use them for structural prescreening and relative trends, not for
+    final energetics at spin-polarized or redox-active mineral interfaces; every candidate geometry is
+    checked against DFT before energy differences are interpreted.
   </p>
 
   <h2>Microbial community analysis</h2>
