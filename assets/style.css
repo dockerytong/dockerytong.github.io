@@ -346,33 +346,27 @@ footer.site .wrap {
 
 .pubs-page ol.pubs .yr { top: 0.3rem; }
 
-.pubs-page .ttl { font-weight: 600; color: var(--ink); }
-
-.pubs-page .au {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  line-height: 1.5;
-  margin-top: 0.15rem;
-}
-
-.pubs-page .au .me { color: var(--ink); font-weight: 600; }
+.pubs-page .ttl { color: var(--ink); }
 
 .pubs-page .venue {
-  font-size: 0.86rem;
-  color: var(--ink-faint);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
   margin-top: 0.1rem;
 }
 
-.pubs-page .venue .jr { color: var(--ink-soft); }
+.pubs-page .venue .me { color: var(--ink); font-weight: 600; }
+
+.pubs-page .venue .jr { font-family: inherit; font-style: italic; }
 
 .pubs-page .tag { margin: 0 0.4rem 0 0; vertical-align: 0.1em; }
 
-.pubs-page details.more { display: inline; }
+.pubs-page details.more { display: inline-block; vertical-align: baseline; }
 
 .pubs-page details.more summary,
 .pubs-page .more-hint {
-  display: inline;
+  display: inline-block;
   cursor: pointer;
   color: var(--accent);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
@@ -384,6 +378,33 @@ footer.site .wrap {
 .pubs-page details.more summary::-webkit-details-marker { display: none; }
 
 .pubs-page .legend { margin-top: -0.3rem; }
+
+.pubs-page details.earlier { margin-top: 2.6rem; }
+
+.pubs-page details.earlier > summary {
+  cursor: pointer;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding-bottom: 0.4rem;
+  list-style: none;
+}
+
+.pubs-page details.earlier > summary::-webkit-details-marker { display: none; }
+
+.pubs-page details.earlier > summary::before { content: "+ "; color: var(--accent); }
+
+.pubs-page details.earlier[open] > summary::before { content: "− "; }
+
+.pubs-page details.earlier .count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--ink-faint);
+  margin-left: 0.4rem;
+}
+
+.pubs-page details.earlier ol.pubs { margin-top: 1rem; }
 
 /* ---------- responsive ---------- */
 

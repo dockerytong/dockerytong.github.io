@@ -97,6 +97,14 @@ THREADS = [
         "10.1039/d0ra01177k",
         "10.1016/j.seppur.2026.140480",
         "10.1016/j.jhazmat.2026.144077",
+        # sulfate reduction on sulfur/iron-carbon/maifanite substrates, Fenton-type cathodes
+        "10.1016/j.jenvman.2025.128343",
+        "10.1016/j.cej.2024.157180",
+        "10.1016/j.watres.2024.121775",
+        "10.1016/j.envres.2024.120166",
+        "10.1016/j.jclepro.2023.136332",
+        "10.1016/j.cej.2023.143780",
+        "10.1016/j.jwpe.2022.102954",
     }, ("electrochemical stimulation",)),
     ("Mineral photocatalysis and iron cycling in the euphotic zone", {
         "10.1038/s41467-026-73469-3",
@@ -104,11 +112,18 @@ THREADS = [
         "10.1080/01490451.2025.2523822",
         "10.3390/catal15080739",
         "10.1016/j.matlet.2024.136135",
+        # Fe-mineral transformation and Fe(II) cycling in the same systems
+        "10.1021/acs.est.6c05850",
+        "10.1016/j.scitotenv.2021.147396",
+        "10.1016/j.envres.2020.109391",
     }, ("水铁矿光催化",)),
     ("Tailings to soil: aggregates, metals, and organic matter", {
         "10.1038/s43247-026-03718-2",
         "10.1016/j.jes.2026.105867",
         "10.1016/j.jes.2026.105835",
+        # coal-derived organic matter; biochar sorption of Pb/Cd
+        "10.13745/j.esf.sf.2025.5.4",
+        "10.1016/j.jhazmat.2021.128059",
     }, ("vegetation succession",)),
 ]
 EARLIER_HEADING = "Earlier work: water treatment and groundwater remediation"
@@ -258,13 +273,13 @@ TAG = {"first": "First", "corr": "Corresp.", "cofirst": "Co-first"}
 
 
 def entry(item):
-    """Three tiers: title (strongest), authors (folded), venue (italic journal)."""
+    """Plain title on its own line; authors and venue share the next line."""
     role = role_of(item)
     year = (item.get("date") or "")[:4]
     title = html.escape(clean(item.get("title")))
     if title and title[-1] not in ".?!":
         title += "."
-    tag = f'<span class="tag {role}">{TAG[role]}</span>' if role in TAG else ""
+    tag = f'<span class="tag {role}">{TAG[role]}</span> ' if role in TAG else ""
     journal = html.escape(fmt_journal(item.get("publicationTitle", "")))
     vol = item.get("volume")
     pages = clean(item.get("pages", ""))
@@ -277,16 +292,17 @@ def entry(item):
             tail += f", {html.escape(pages)}"
     elif pages:
         tail = f" {html.escape(pages)}"
-    venue = f'<span class="jr">{journal}</span>{tail}'
-    if not clean(venue).endswith("."):
-        venue += "."
+    auth = authors_html(item)
+    auth_sep = "" if auth.endswith(".") else "."
+    ref = f'<span class="jr">{journal}</span>{tail}'
+    if not clean(ref).endswith("."):
+        ref += "."
     zh = " (in Chinese)" if (item.get("note") or "").startswith("in Chinese") else ""
     doi = item.get("DOI")
     doi_html = f' <a href="https://doi.org/{html.escape(doi)}">doi</a>' if doi else ""
     return (f'<li><span class="yr">{html.escape(year)}</span>'
-            f'<div class="ttl">{tag + " " if tag else ""}{title}</div>'
-            f'<div class="au">{authors_html(item)}</div>'
-            f'<div class="venue">{venue}{zh}{doi_html}</div></li>')
+            f'<div class="ttl">{tag}{title}</div>'
+            f'<div class="venue">{auth}{auth_sep} {ref}{zh}{doi_html}</div></li>')
 
 
 PAGE = """<!doctype html>
@@ -327,8 +343,8 @@ PAGE = """<!doctype html>
 
   <p class="note">
     {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author.
-    Grouped by research thread, matching the <a href="research.html">Research</a> page; the earlier
-    water-treatment and groundwater work is listed last.
+    Grouped by research thread, matching the <a href="research.html">Research</a> page; older
+    water-treatment and microbiology papers that fall outside the threads are collapsed at the end.
     Also indexed on <a href="https://scholar.google.com/citations?user=Fs0dsfMAAAAJ&amp;hl=en">Google Scholar</a>, <a href="https://www.researchgate.net/profile/Tong-Liu-25">ResearchGate</a>, and <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
   </p>
 
@@ -380,7 +396,7 @@ def main():
           "co:", len(co), "total:", len(items))
 
     parts = [section(name, [i for i in items if thread_of(i) == name]) for name, _, _ in THREADS]
-    parts.append(section(EARLIER_HEADING, [i for i in items if thread_of(i) is None]))
+    parts.append(section(EARLIER_HEADING, [i for i in items if thread_of(i) is None], collapsed=True))
     page = PAGE.format(
         sections="\n\n".join(p for p in parts if p),
         n_lead=len(lead),
@@ -392,12 +408,16 @@ def main():
           f"{len(co)} co-authored, {len(items)} total)")
 
 
-def section(title, group):
+def section(title, group, collapsed=False):
     if not group:
         return ""
     body = "\n".join(entry(i) for i in group)
-    return (f'  <h2>{html.escape(title)} <span class="count">{len(group)}</span></h2>\n\n'
-            f'  <ol class="pubs">\n{body}\n  </ol>')
+    ol = f'  <ol class="pubs">\n{body}\n  </ol>'
+    if collapsed:
+        return (f'  <details class="earlier">\n'
+                f'  <summary>{html.escape(title)} <span class="count">{len(group)}</span></summary>\n\n'
+                f'{ol}\n  </details>')
+    return (f'  <h2>{html.escape(title)} <span class="count">{len(group)}</span></h2>\n\n{ol}')
 
 
 def thread_of(item):
