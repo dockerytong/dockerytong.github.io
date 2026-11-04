@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Generate publications.html from a cached Zotero export.
 
-Processing rules for adding papers (tags, threads, EXTRA, folding): see README.md, "Adding a paper".
-
 Zotero's local API does not return creatorSummary, so dump your own items with:
 
     python3 - <<'EOF'
@@ -228,61 +226,22 @@ def role_of(item):
         return "cofirst"
     return "co"
 
-def one_author(c):
-    last = (c.get("lastName") or "").strip()
-    first = (c.get("firstName") or "").strip()
-    if not last and c.get("name"):
-        return c["name"]
-    if re.search(r"[\u4e00-\u9fff]", last):
-        return last + first               # CJK: keep as written
-    return f"{last}, {initials(first)}" if first else last
-
-
-TRUNC_OVER = 5   # lists up to this length are shown whole
-KEEP_HEAD = 3    # names shown before the fold; the user's own name is always shown
-
-
-def authors_html(item):
-    people = [(one_author(c), is_self(c)) for c in item.get("creators", [])
-              if c.get("creatorType") in (None, "author") and one_author(c)]
-    people += [(n, n.startswith("刘通")) for n in (item.get("extra_authors") or "").split(", ") if n]
-
-    def show(p):
-        t = html.escape(p[0])
-        return f'<span class="me">{t}</span>' if p[1] else t
-
-    if len(people) <= TRUNC_OVER:
-        return ", ".join(show(p) for p in people)
-    out, hidden = [], []
-
-    def flush():
-        if hidden:
-            out.append(f'<details class="more"><summary>+{len(hidden)}</summary>'
-                       + ", ".join(show(p) for p in hidden) + "</details>")
-            hidden.clear()
-
-    for i, p in enumerate(people):
-        if i < KEEP_HEAD or p[1]:
-            flush()
-            out.append(show(p))
-        else:
-            hidden.append(p)
-    flush()
-    return ", ".join(out)
-
-
-TAG = {"first": "First", "corr": "Corresp.", "cofirst": "Co-first"}
-
-
 def entry(item):
-    """Plain title on its own line; authors and venue share the next line."""
+    authors = author_list(item.get("creators", []))
+    if item.get("extra_authors"):
+        authors = authors + item["extra_authors"].split(", ")
+    marked = []
+    for a in authors:
+        if a.startswith("刘通") or a.startswith("Liu, T."):
+            marked.append(f'<span class="me">{html.escape(a)}</span>')
+        else:
+            marked.append(html.escape(a))
     role = role_of(item)
+    badge = {"first": '<span class="role">first</span>',
+             "corr": '<span class="role">corresp.</span>',
+             "cofirst": '<span class="role">co-first</span>'}.get(role, "")
     year = (item.get("date") or "")[:4]
-    title = html.escape(clean(item.get("title")))
-    if title and title[-1] not in ".?!":
-        title += "."
-    tag = f'<span class="tag {role}">{TAG[role]}</span> ' if role in TAG else ""
-    journal = html.escape(fmt_journal(item.get("publicationTitle", "")))
+    journal = fmt_journal(item.get("publicationTitle", ""))
     vol = item.get("volume")
     pages = clean(item.get("pages", ""))
     tail = ""
@@ -294,17 +253,20 @@ def entry(item):
             tail += f", {html.escape(pages)}"
     elif pages:
         tail = f" {html.escape(pages)}"
-    auth = authors_html(item)
-    auth_sep = "" if auth.endswith(".") else "."
-    ref = f'<span class="jr">{journal}</span>{tail}'
-    if not clean(ref).endswith("."):
-        ref += "."
-    zh = " (in Chinese)" if (item.get("note") or "").startswith("in Chinese") else ""
     doi = item.get("DOI")
-    doi_html = f' <a href="https://doi.org/{html.escape(doi)}">doi</a>' if doi else ""
+    doi_html = ""
+    if doi:
+        doi_html = f' <a href="https://doi.org/{html.escape(doi)}">doi</a>'
+    title = html.escape(clean(item.get("title"))).replace("&lt;i&gt;", "").replace("&lt;/i&gt;", "")
+    zh = " (in Chinese)" if (item.get("note") or "").startswith("in Chinese") else ""
+    auth = ", ".join(marked)
+    auth_sep = "" if auth.endswith(".") or auth.endswith(".</span>") else "."
+    ref = f'<span class="jr">{html.escape(journal)}</span>{tail}'
+    visible_tail = (tail or journal).strip()
+    if visible_tail and not visible_tail.endswith("."):
+        ref += "."
     return (f'<li><span class="yr">{html.escape(year)}</span>'
-            f'<div class="ttl">{tag}{title}</div>'
-            f'<div class="venue">{auth}{auth_sep} {ref}{zh}{doi_html}</div></li>')
+            f'{auth}{auth_sep} {title}. {ref}{zh}{doi_html}{(" " + badge) if badge else ""}</li>')
 
 
 PAGE = """<!doctype html>
@@ -339,22 +301,15 @@ PAGE = """<!doctype html>
   </div>
 </header>
 
-<main class="wrap pubs-page">
+<main class="wrap">
 
   <h1>Publications</h1>
 
   <p class="note">
     {n_lead} papers as first or corresponding author ({n_cofirst} of them co-first), {n_co} as co-author.
-    Grouped by research thread, matching the <a href="research.html">Research</a> page; older
-    water-treatment and microbiology papers that fall outside the threads are collapsed at the end.
+    Grouped first by authorship role, then by research thread; the earlier water-treatment and
+    groundwater work is folded at the end of each group.
     Also indexed on <a href="https://scholar.google.com/citations?user=Fs0dsfMAAAAJ&amp;hl=en">Google Scholar</a>, <a href="https://www.researchgate.net/profile/Tong-Liu-25">ResearchGate</a>, and <a href="https://orcid.org/0000-0001-6829-0727">ORCID</a>.
-  </p>
-
-  <p class="note legend">
-    <span class="tag first">First</span> first author &middot;
-    <span class="tag cofirst">Co-first</span> shared first authorship &middot;
-    <span class="tag corr">Corresp.</span> corresponding author &middot;
-    <span class="more-hint">+N</span> further co-authors, click to expand.
   </p>
 
 {sections}
@@ -384,42 +339,59 @@ def main():
              and x.get("itemType") == "journalArticle"
              and x.get("publicationTitle")
              and x.get("DOI") not in SKIP_DOIS]
-    have = {i.get("DOI") for i in items if i.get("DOI")}
-    items += [e for e in EXTRA if e.get("DOI") not in have]
+    items += EXTRA
     items.sort(key=date_key, reverse=True)
 
     first = [i for i in items if role_of(i) == "first"]
     corr = [i for i in items if role_of(i) == "corr"]
     cofirst = [i for i in items if role_of(i) == "cofirst"]
     co = [i for i in items if role_of(i) == "co"]
-    lead = first + corr + cofirst
 
     print("first:", len(first), "corr:", len(corr), "cofirst:", len(cofirst),
           "co:", len(co), "total:", len(items))
+    for label, group in (("FIRST", first), ("CORR", corr), ("CO-FIRST", cofirst)):
+        print(f"--- {label}")
+        for i in group:
+            print("  ", (i.get('date') or '')[:4], clean(i.get('publicationTitle')), "|", clean(i.get('title'))[:60])
 
-    parts = [section(name, [i for i in items if thread_of(i) == name]) for name, _, _ in THREADS]
-    parts.append(section(EARLIER_HEADING, [i for i in items if thread_of(i) is None], collapsed=True))
+    lead_items = sorted(first + corr + cofirst, key=date_key, reverse=True)
+
+    sections_html = "\n\n".join([
+        group_html("First, co-first, and corresponding author", lead_items),
+        group_html("Co-authored", co),
+    ])
+
     page = PAGE.format(
-        sections="\n\n".join(p for p in parts if p),
-        n_lead=len(lead),
+        sections=sections_html,
+        n_lead=len(lead_items),
         n_cofirst=len(cofirst),
         n_co=len(co),
     )
-    (ROOT / "publications.html").write_text(page, encoding="utf-8")
-    print(f"wrote publications.html ({len(lead)} lead incl. {len(cofirst)} co-first, "
-          f"{len(co)} co-authored, {len(items)} total)")
+    (ROOT / "publications.html").write_text(page)
+    print(f"wrote publications.html ({len(lead_items)} lead incl. {len(cofirst)} co-first, "
+          f"{len(co)} co-authored)")
 
 
 def section(title, group, collapsed=False):
-    if not group:
-        return ""
     body = "\n".join(entry(i) for i in group)
-    ol = f'  <ol class="pubs">\n{body}\n  </ol>'
     if collapsed:
         return (f'  <details class="earlier">\n'
                 f'  <summary>{html.escape(title)} <span class="count">{len(group)}</span></summary>\n\n'
-                f'{ol}\n  </details>')
-    return (f'  <h2>{html.escape(title)} <span class="count">{len(group)}</span></h2>\n\n{ol}')
+                f'  <ol class="pubs">\n{body}\n  </ol>\n  </details>')
+    return f'  <h3>{html.escape(title)}</h3>\n\n  <ol class="pubs">\n{body}\n  </ol>'
+
+
+def group_html(label, group):
+    """One role block (h2) with one h3 subsection per thread, empty ones skipped."""
+    parts = [f'  <h2>{html.escape(label)}</h2>']
+    for name, _, _ in THREADS:
+        sub = [i for i in group if thread_of(i) == name]
+        if sub:
+            parts.append(section(name, sub))
+    sub = [i for i in group if thread_of(i) is None]
+    if sub:
+        parts.append(section(EARLIER_HEADING, sub, collapsed=True))
+    return "\n\n".join(parts)
 
 
 def thread_of(item):
