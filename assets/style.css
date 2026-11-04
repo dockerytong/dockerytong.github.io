@@ -188,7 +188,7 @@ ol.pubs .me { font-weight: 600; }
 
 ol.pubs a { font-style: normal; }
 
-.role {
+.tag, .role {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
   font-size: 0.68rem;
   letter-spacing: 0.06em;
@@ -316,6 +316,74 @@ footer.site .wrap {
   border-left: 2px solid var(--rule);
   color: var(--ink-soft);
 }
+
+/* ---------- publications page: thread → title → authors → venue ---------- */
+
+.pubs-page h2 {
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: inherit;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 2.6rem 0 0.9rem;
+}
+
+.pubs-page h2 .count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: var(--ink-faint);
+  margin-left: 0.4rem;
+}
+
+.pubs-page ol.pubs li {
+  padding-left: 2.7rem;
+  margin-bottom: 1.3rem;
+  font-size: 0.97rem;
+  line-height: 1.5;
+}
+
+.pubs-page ol.pubs .yr { top: 0.3rem; }
+
+.pubs-page .ttl { font-weight: 600; color: var(--ink); }
+
+.pubs-page .au {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin-top: 0.15rem;
+}
+
+.pubs-page .au .me { color: var(--ink); font-weight: 600; }
+
+.pubs-page .venue {
+  font-size: 0.86rem;
+  color: var(--ink-faint);
+  margin-top: 0.1rem;
+}
+
+.pubs-page .venue .jr { color: var(--ink-soft); }
+
+.pubs-page .tag { margin: 0 0.4rem 0 0; vertical-align: 0.1em; }
+
+.pubs-page details.more { display: inline; }
+
+.pubs-page details.more summary,
+.pubs-page .more-hint {
+  display: inline;
+  cursor: pointer;
+  color: var(--accent);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 0.74rem;
+  border-bottom: 1px dotted var(--accent);
+  list-style: none;
+}
+
+.pubs-page details.more summary::-webkit-details-marker { display: none; }
+
+.pubs-page .legend { margin-top: -0.3rem; }
 
 /* ---------- responsive ---------- */
 
