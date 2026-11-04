@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate publications.html from a cached Zotero export.
 
+Processing rules for adding papers (tags, threads, EXTRA, folding): see README.md, "Adding a paper".
+
 Zotero's local API does not return creatorSummary, so dump your own items with:
 
     python3 - <<'EOF'
